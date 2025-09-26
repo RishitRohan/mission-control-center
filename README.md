@@ -163,10 +163,25 @@ mission_control_center/
 
 ## 🚀 Deployment
 
-For public access, deploy to a cloud service:
-- **Render**: Add as web service, set start command to `npm start`
+### Deploy to Render
+
+1. Push to GitHub repository
+2. Go to [Render Dashboard](https://dashboard.render.com/)
+3. Click "New +" → "Web Service"
+4. Connect your GitHub repository
+5. Configure:
+   - **Name**: mission-control-center
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+   - **Environment**: Node
+6. Click "Create Web Service"
+
+The app will be available at: `https://mission-control-center.onrender.com`
+
+### Alternative Deployment Options
 - **Heroku**: Push to Heroku git, uses PORT environment variable
 - **Railway**: Import from GitHub, auto-detects Node.js
+- **Vercel**: Works with Node.js runtime
 
 ## 📝 License
 
