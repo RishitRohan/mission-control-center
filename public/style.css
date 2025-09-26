@@ -1,0 +1,546 @@
+/* Mission Control Center - NASA-inspired styling */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #0f0;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.mission-control {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);
+}
+
+/* Header */
+.header {
+    background: #111;
+    border-bottom: 2px solid #0f0;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    font-size: 2rem;
+}
+
+.header h1 {
+    font-size: 1.5rem;
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
+    letter-spacing: 2px;
+}
+
+.mission-info {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.mission-name,
+.vehicle-name {
+    color: #0ff;
+    font-weight: bold;
+}
+
+.connection-status {
+    padding: 5px 15px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.connection-status.connected {
+    color: #0f0;
+    border: 1px solid #0f0;
+}
+
+.connection-status.disconnected {
+    color: #f00;
+    border: 1px solid #f00;
+}
+
+/* Main Display Layout */
+.main-display {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 250px 1fr 300px;
+    gap: 20px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Telemetry Panel */
+.telemetry-panel {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.telemetry-panel h2 {
+    color: #0ff;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.telemetry-group {
+    margin-bottom: 20px;
+}
+
+.telemetry-group h3 {
+    color: #ff0;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.telemetry-item {
+    display: grid;
+    grid-template-columns: 120px 80px 40px;
+    padding: 5px 0;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.telemetry-item .label {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.telemetry-item .value {
+    color: #0f0;
+    text-align: right;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+.telemetry-item .unit {
+    color: #666;
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+/* Center Panel */
+.center-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Countdown Display */
+.countdown-display {
+    background: #0a0a0a;
+    border: 2px solid #0ff;
+    border-radius: 5px;
+    padding: 30px;
+    text-align: center;
+}
+
+.countdown-label {
+    font-size: 1.5rem;
+    color: #ff0;
+    margin-bottom: 10px;
+}
+
+.countdown-time {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #0ff;
+    text-shadow: 0 0 20px #0ff;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 5px;
+}
+
+.mission-phase {
+    font-size: 1.5rem;
+    color: #ff0;
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #ff0;
+    border-radius: 3px;
+}
+
+/* Charts */
+.charts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.chart-wrapper {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.chart-wrapper h3 {
+    color: #0ff;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.chart-wrapper canvas {
+    max-height: 200px;
+}
+
+/* Go/No-Go Poll */
+.go-no-go-panel {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.go-no-go-panel h3 {
+    color: #0ff;
+    margin-bottom: 15px;
+}
+
+.poll-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.poll-station {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 3px;
+    padding: 10px;
+    text-align: center;
+}
+
+.station-name {
+    display: block;
+    color: #888;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.station-status {
+    display: block;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+.station-status.pending {
+    color: #ff0;
+    background: rgba(255, 255, 0, 0.1);
+}
+
+.station-status.go {
+    color: #0f0;
+    background: rgba(0, 255, 0, 0.1);
+}
+
+.station-status.no-go {
+    color: #f00;
+    background: rgba(255, 0, 0, 0.1);
+}
+
+/* Control Panel */
+.control-panel {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px;
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.btn {
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid;
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    font-family: 'Courier New', monospace;
+}
+
+.btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    color: #0ff;
+    border-color: #0ff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px #0ff;
+}
+
+.btn-secondary {
+    color: #ff0;
+    border-color: #ff0;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #ff0;
+    color: #000;
+}
+
+.btn-warning {
+    color: #fa0;
+    border-color: #fa0;
+}
+
+.btn-warning:hover:not(:disabled) {
+    background: #fa0;
+    color: #000;
+}
+
+.btn-success {
+    color: #0f0;
+    border-color: #0f0;
+}
+
+.btn-success:hover:not(:disabled) {
+    background: #0f0;
+    color: #000;
+}
+
+.btn-danger {
+    color: #f00;
+    border-color: #f00;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #f00;
+    color: #000;
+    box-shadow: 0 0 20px #f00;
+}
+
+/* Systems Panel */
+.systems-panel {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.systems-panel h2 {
+    color: #0ff;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.system-group {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #222;
+}
+
+.system-group h3 {
+    color: #ff0;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.status-item {
+    display: grid;
+    grid-template-columns: 100px 80px 40px;
+    padding: 3px 0;
+}
+
+.status-item .label {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.status-item .value {
+    color: #0f0;
+    text-align: right;
+    font-weight: bold;
+}
+
+.status-item .unit {
+    color: #666;
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 8px;
+    background: #111;
+    border-radius: 3px;
+}
+
+.indicator-label {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.indicator-light {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.indicator-light.green {
+    background: #0f0;
+    box-shadow: 0 0 10px #0f0;
+}
+
+.indicator-light.yellow {
+    background: #ff0;
+    box-shadow: 0 0 10px #ff0;
+}
+
+.indicator-light.red {
+    background: #f00;
+    box-shadow: 0 0 10px #f00;
+    animation: blink 1s infinite;
+}
+
+/* Station Selection */
+.station-select {
+    background: #111;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.station-select h3 {
+    color: #0ff;
+    margin-bottom: 10px;
+}
+
+#station-selector {
+    width: 100%;
+    padding: 8px;
+    background: #000;
+    color: #0f0;
+    border: 1px solid #333;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+}
+
+.station-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.station-controls .btn {
+    flex: 1;
+    padding: 10px;
+}
+
+/* Event Log */
+.event-log-panel {
+    background: #0a0a0a;
+    border: 1px solid #333;
+    border-top: 2px solid #0f0;
+    padding: 15px;
+    height: 150px;
+}
+
+.event-log-panel h3 {
+    color: #0ff;
+    margin-bottom: 10px;
+}
+
+.event-log {
+    height: calc(100% - 30px);
+    overflow-y: auto;
+    font-size: 0.85rem;
+    font-family: 'Courier New', monospace;
+}
+
+.event-entry {
+    padding: 3px 0;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.event-entry.info {
+    color: #0ff;
+}
+
+.event-entry.success {
+    color: #0f0;
+}
+
+.event-entry.warning {
+    color: #ff0;
+}
+
+.event-entry.critical {
+    color: #f00;
+    font-weight: bold;
+    animation: blink 2s infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+    .main-display {
+        grid-template-columns: 200px 1fr 250px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .countdown-time {
+        font-size: 3rem;
+    }
+
+    .poll-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

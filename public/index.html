@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control Center - Launch Operations</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="mission-control">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🚀</span>
+                <h1>MISSION CONTROL CENTER</h1>
+            </div>
+            <div class="mission-info">
+                <div class="mission-name">MISSION: ISS-RESUPPLY-47</div>
+                <div class="vehicle-name">VEHICLE: FALCON-X</div>
+                <div id="connection-status" class="connection-status disconnected">● OFFLINE</div>
+            </div>
+        </header>
+
+        <!-- Main Display Area -->
+        <div class="main-display">
+            <!-- Left Panel - Telemetry -->
+            <div class="telemetry-panel">
+                <h2>TELEMETRY</h2>
+
+                <!-- Altitude & Velocity -->
+                <div class="telemetry-group">
+                    <h3>TRAJECTORY</h3>
+                    <div class="telemetry-item">
+                        <span class="label">Altitude</span>
+                        <span class="value" id="altitude">0</span>
+                        <span class="unit">km</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Velocity</span>
+                        <span class="value" id="velocity">0</span>
+                        <span class="unit">m/s</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Downrange</span>
+                        <span class="value" id="downrange">0</span>
+                        <span class="unit">km</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Acceleration</span>
+                        <span class="value" id="acceleration">0</span>
+                        <span class="unit">G</span>
+                    </div>
+                </div>
+
+                <!-- Propulsion -->
+                <div class="telemetry-group">
+                    <h3>PROPULSION</h3>
+                    <div class="telemetry-item">
+                        <span class="label">Thrust</span>
+                        <span class="value" id="thrust">0</span>
+                        <span class="unit">kN</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">TWR</span>
+                        <span class="value" id="twr">0.0</span>
+                        <span class="unit"></span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Fuel Remaining</span>
+                        <span class="value" id="fuel">100</span>
+                        <span class="unit">%</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Chamber Pressure</span>
+                        <span class="value" id="chamber-pressure">0</span>
+                        <span class="unit">bar</span>
+                    </div>
+                </div>
+
+                <!-- Environmental -->
+                <div class="telemetry-group">
+                    <h3>ENVIRONMENTAL</h3>
+                    <div class="telemetry-item">
+                        <span class="label">Dynamic Pressure</span>
+                        <span class="value" id="dynamic-pressure">0</span>
+                        <span class="unit">kPa</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Mach Number</span>
+                        <span class="value" id="mach">0.0</span>
+                        <span class="unit"></span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Max Q</span>
+                        <span class="value" id="max-q">0</span>
+                        <span class="unit">kPa</span>
+                    </div>
+                </div>
+
+                <!-- Orbital Parameters -->
+                <div class="telemetry-group">
+                    <h3>ORBITAL</h3>
+                    <div class="telemetry-item">
+                        <span class="label">Apogee</span>
+                        <span class="value" id="apogee">0</span>
+                        <span class="unit">km</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Perigee</span>
+                        <span class="value" id="perigee">0</span>
+                        <span class="unit">km</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="label">Inclination</span>
+                        <span class="value" id="inclination">51.6</span>
+                        <span class="unit">°</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Main Display -->
+            <div class="center-panel">
+                <!-- Countdown Timer -->
+                <div class="countdown-display">
+                    <div class="countdown-label">T<span id="countdown-sign">-</span></div>
+                    <div class="countdown-time" id="countdown">00:00:30</div>
+                    <div class="mission-phase" id="mission-phase">IDLE</div>
+                </div>
+
+                <!-- Charts Container -->
+                <div class="charts-container">
+                    <div class="chart-wrapper">
+                        <h3>ALTITUDE</h3>
+                        <canvas id="altitude-chart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h3>VELOCITY</h3>
+                        <canvas id="velocity-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Go/No-Go Poll -->
+                <div class="go-no-go-panel">
+                    <h3>GO/NO-GO POLL STATUS</h3>
+                    <div class="poll-grid" id="poll-grid">
+                        <div class="poll-station" data-station="Flight Director">
+                            <span class="station-name">FD</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                        <div class="poll-station" data-station="Booster">
+                            <span class="station-name">BOOSTER</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                        <div class="poll-station" data-station="FIDO">
+                            <span class="station-name">FIDO</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                        <div class="poll-station" data-station="Guidance">
+                            <span class="station-name">GUIDANCE</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                        <div class="poll-station" data-station="EECOM">
+                            <span class="station-name">EECOM</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                        <div class="poll-station" data-station="GNC">
+                            <span class="station-name">GNC</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                        <div class="poll-station" data-station="CAPCOM">
+                            <span class="station-name">CAPCOM</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                        <div class="poll-station" data-station="Range Safety">
+                            <span class="station-name">RSO</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                        <div class="poll-station" data-station="Weather">
+                            <span class="station-name">WEATHER</span>
+                            <span class="station-status pending">PENDING</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control Panel -->
+                <div class="control-panel">
+                    <button id="init-launch" class="btn btn-primary">INITIATE LAUNCH SEQUENCE</button>
+                    <button id="start-poll" class="btn btn-secondary">START GO/NO-GO POLL</button>
+                    <button id="hold" class="btn btn-warning">HOLD</button>
+                    <button id="resume" class="btn btn-success" disabled>RESUME</button>
+                    <button id="abort" class="btn btn-danger">ABORT</button>
+                    <button id="land" class="btn btn-success">INITIATE LANDING</button>
+                    <button id="reset" class="btn btn-secondary">RESET SIMULATION</button>
+                </div>
+            </div>
+
+            <!-- Right Panel - Systems Status -->
+            <div class="systems-panel">
+                <h2>SYSTEMS STATUS</h2>
+
+                <!-- Weather -->
+                <div class="system-group">
+                    <h3>WEATHER</h3>
+                    <div class="status-item">
+                        <span class="label">Surface Wind</span>
+                        <span class="value" id="surface-wind">0</span>
+                        <span class="unit">kts</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Upper Wind</span>
+                        <span class="value" id="upper-wind">0</span>
+                        <span class="unit">kts</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Cloud Ceiling</span>
+                        <span class="value" id="cloud-ceiling">0</span>
+                        <span class="unit">ft</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Lightning</span>
+                        <span class="value" id="lightning">CLEAR</span>
+                    </div>
+                    <div class="status-indicator" id="weather-status">
+                        <span class="indicator-label">WEATHER</span>
+                        <span class="indicator-light green"></span>
+                    </div>
+                </div>
+
+                <!-- Range -->
+                <div class="system-group">
+                    <h3>RANGE CONTROL</h3>
+                    <div class="status-item">
+                        <span class="label">Airspace</span>
+                        <span class="value" id="airspace">CLEAR</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Maritime</span>
+                        <span class="value" id="maritime">CLEAR</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Tracking</span>
+                        <span class="value" id="tracking">0/5</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">FTS Status</span>
+                        <span class="value" id="fts">SAFE</span>
+                    </div>
+                    <div class="status-indicator" id="range-status">
+                        <span class="indicator-label">RANGE</span>
+                        <span class="indicator-light green"></span>
+                    </div>
+                </div>
+
+                <!-- Vehicle Status -->
+                <div class="system-group">
+                    <h3>VEHICLE</h3>
+                    <div class="status-item">
+                        <span class="label">Stage</span>
+                        <span class="value" id="stage">1</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Phase</span>
+                        <span class="value" id="flight-phase">PAD</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Engine Status</span>
+                        <span class="value" id="engine-status">OFF</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Mass</span>
+                        <span class="value" id="mass">549</span>
+                        <span class="unit">t</span>
+                    </div>
+                    <div class="status-indicator" id="vehicle-status">
+                        <span class="indicator-label">VEHICLE</span>
+                        <span class="indicator-light green"></span>
+                    </div>
+                </div>
+
+                <!-- Station Assignment -->
+                <div class="station-select">
+                    <h3>YOUR STATION</h3>
+                    <select id="station-selector">
+                        <option value="">Select Station</option>
+                        <option value="Flight Director">Flight Director</option>
+                        <option value="Booster">Booster</option>
+                        <option value="FIDO">FIDO</option>
+                        <option value="Guidance">Guidance</option>
+                        <option value="EECOM">EECOM</option>
+                        <option value="GNC">GNC</option>
+                        <option value="CAPCOM">CAPCOM</option>
+                        <option value="Range Safety">Range Safety</option>
+                        <option value="Weather">Weather</option>
+                    </select>
+                    <div class="station-controls" id="station-controls" style="display:none;">
+                        <button id="vote-go" class="btn btn-success">GO</button>
+                        <button id="vote-no-go" class="btn btn-danger">NO-GO</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Log -->
+        <div class="event-log-panel">
+            <h3>EVENT LOG</h3>
+            <div class="event-log" id="event-log"></div>
+        </div>
+    </div>
+
+    <script src="mission-control.js"></script>
+</body>
+</html>
